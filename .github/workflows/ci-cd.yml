@@ -1,0 +1,39 @@
+name: Toxic Comment Detector CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install fastapi uvicorn scikit-learn pandas numpy pydantic
+
+    - name: Test API import
+      run: |
+        python -c "from fastapi import FastAPI; print('FastAPI OK')"
+        python -c "import pandas; print('Pandas OK')"
+        python -c "import numpy; print('Numpy OK')"
+
+    - name: Build Docker image
+      run: |
+        docker build -t toxic-comment-detector:v1 .
+
+    - name: Verify Docker image
+      run: |
+        docker images toxic-comment-detector:v1
