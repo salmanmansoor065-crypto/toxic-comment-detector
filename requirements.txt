@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+tensorflow==2.21.0
+scikit-learn
+pandas
+numpy
+pydantic
