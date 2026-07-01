@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toxic-detector
+  labels:
+    app: toxic-detector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toxic-detector
+  template:
+    metadata:
+      labels:
+        app: toxic-detector
+    spec:
+      containers:
+      - name: toxic-detector
+        image: toxic-comment-detector:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
